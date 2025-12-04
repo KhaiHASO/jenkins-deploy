@@ -1,11 +1,15 @@
 FROM jenkins/jenkins:lts
 
 USER root
-RUN apt-get update -y && apt-get install -y docker.io curl sudo
+RUN apt-get update && apt-get install -y sudo docker.io
 
-# Cho phép Jenkins dùng Docker socket (nếu cần)
-RUN usermod -aG docker jenkins
+# Run Jenkins as root
+USER root
 
-# Run Jenkins as jenkins user
-USER jenkins
+# Jenkins home
+ENV JENKINS_HOME /var/jenkins_home
+
+# setup wizard off
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
+
+EXPOSE 8080
